@@ -4,7 +4,7 @@ FLAGS = -Wall -g
 make all: stringProg
 
 stringProg: Ex3.c
-	$(CC) Ex3.c -o stringProg
+	$(CC) $(FLAGS) Ex3.c -o stringProg 
 
 make run:
 	./stringProg	
