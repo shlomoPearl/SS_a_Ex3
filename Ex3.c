@@ -7,6 +7,7 @@
 static char txt[TXT] = {0};
 static char word[WORD] = {0};
 static int lenOfword=0;
+static int lenOfTxt = 0;
 
 void getTxt(){
     int i=0;
@@ -14,6 +15,7 @@ void getTxt(){
         scanf("%c",&txt[i]);
         if(txt[i] == '~')break;
         i++;
+        lenOfTxt++;
     }
 }
 
@@ -173,9 +175,77 @@ void atbash(){
 }
 
 
+int isContain(char c){
+    for(int i=0;i<lenOfword;i++){
+        if(word[i] == c){
+            return 1; //true word not contain c
+        }
+    }
+    return 0;
+}
+
+int check (int a[],int b[]){
+    for(int i=0;i<128;i++){
+        if(a[i]!=b[i]){
+            if(a[i] == ' ' || b[i]==' '){
+                continue;
+            }else{
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
 void anagram(){
     printf("Anagram Sequences: ");
-    
+    int checkWord[128]={0};
+    int checkTxt[128]={0};
+    int counter;
+    int flag = 1;
+
+    for(int i=0 ;i<lenOfword;i++){
+        int currentWord = word[i];
+        int currentTxt= txt[i];
+        checkWord[currentWord]++;
+        checkTxt[currentTxt]++;
+    }
+    for( int i= lenOfword;i<lenOfTxt;i++){
+        if(check(checkWord,checkTxt) == 1){
+            counter =0;
+            int j = i - lenOfword;
+            while(counter<lenOfword){ //print the anagram
+                if(flag == 1){ 
+                    printf("%c",txt[j]);
+                    if(txt[j] >= 'A' &&  txt[j] <= 'z')counter++;
+                    j++;
+                }else{
+                    printf("%c",'~');
+                    flag= 1;
+                }
+            }
+            flag = 0;
+        }
+        int currentTxt= txt[i];
+        int prevTxt = txt[i-lenOfword];
+        checkTxt[currentTxt]++;
+        checkTxt[prevTxt]--;
+    }
+    if(check(checkWord,checkTxt) == 1){
+        counter =0;
+        int j = lenOfTxt - lenOfword;
+        while(counter<lenOfword){ //print the anagram
+            if(flag == 1){ 
+                printf("%c",txt[j]);
+                if(txt[j] >= 'A' &&  txt[j] <= 'z')counter++;
+                j++;
+            }else{
+                printf("%c",'~');
+                flag= 1;
+            }
+        }
+        flag = 0;
+    }
 }
 
 int  main(){
